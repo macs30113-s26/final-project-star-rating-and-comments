@@ -1,0 +1,35 @@
+# AWS credentials and config
+.aws/
+*credentials*
+*.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Data files (too big for git)
+data/
+raw/
+*.parquet
+*.jsonl
+*.jsonl.gz
+*.csv
+*.tsv
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Slurm logs
+*.out
+*.err
+slurm-*.out
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
