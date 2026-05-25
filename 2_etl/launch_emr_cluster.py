@@ -8,10 +8,10 @@ def upload_script(s3, bucket, local_path, key):
     return f's3://{bucket}/{key}'
 
 
-def launch_cluster(emr, bucket, etl_uri, extra_args, worker_count):
+def launch_cluster(emr, bucket, etl_uri, extra_args, worker_count, release, ec2_key):
     response = emr.run_job_flow(
         Name='beyond-stars-etl',
-        ReleaseLabel='emr-7.0.0',
+        ReleaseLabel=release,
         Applications=[{'Name': 'Spark'}],
         Instances={
             'InstanceGroups': [
@@ -30,6 +30,7 @@ def launch_cluster(emr, bucket, etl_uri, extra_args, worker_count):
                     'InstanceCount': worker_count,
                 },
             ],
+            'Ec2KeyName': ec2_key,
             'KeepJobFlowAliveWhenNoSteps': False,
             'TerminationProtected': False,
         },
@@ -76,6 +77,8 @@ if __name__ == '__main__':
     parser.add_argument('--bucket', required=True)
     parser.add_argument('--region', default='us-east-1')
     parser.add_argument('--workers', type=int, default=2)
+    parser.add_argument('--release', default='emr-6.2.0')
+    parser.add_argument('--ec2-key', default='vockey')
     parser.add_argument('--poll-interval', type=int, default=30)
     parser.add_argument('--categories', nargs='+', default=None)
     args = parser.parse_args()
@@ -91,7 +94,8 @@ if __name__ == '__main__':
     if args.categories:
         extra = ['--categories'] + args.categories
 
-    cluster_id = launch_cluster(emr, args.bucket, etl_uri, extra, args.workers)
+    cluster_id = launch_cluster(emr, args.bucket, etl_uri, extra,
+                                args.workers, args.release, args.ec2_key)
     print(f'Cluster launched: {cluster_id}')
     print(f'Console: https://console.aws.amazon.com/elasticmapreduce/home?region={args.region}#cluster-details:{cluster_id}')
 
