@@ -80,13 +80,18 @@ if __name__ == '__main__':
     print(df['category'].value_counts().to_string(), flush=True)
 
     sample = stratified_sample(df, args.n_per_cat, args.seed)
+    sample['review_id'] = (
+        sample['asin'].astype(str) + '_' +
+        sample['user_id'].astype(str) + '_' +
+        sample['timestamp'].astype(str)
+    )
     print(f'Stratified sample: {len(sample)} rows', flush=True)
     print(sample['category'].value_counts().to_string(), flush=True)
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f'Device: {device}', flush=True)
 
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=False)
     model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME).to(device)
     model.eval()
     id2label = model.config.id2label
@@ -103,6 +108,7 @@ if __name__ == '__main__':
                 'review_id': sample['review_id'].iloc[i],
                 'category': sample['category'].iloc[i],
                 'rating': float(sample['rating'].iloc[i]),
+                'year': int(sample['year'].iloc[i]),
                 'aspect': aspect,
                 'label': id2label[labels[i]],
                 'score': scores[i],
