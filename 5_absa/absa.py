@@ -11,11 +11,20 @@ MODEL_NAME = 'yangheng/deberta-v3-base-absa-v1.1'
 
 
 def load_sample(s3, bucket, local_dir):
-    path = os.path.join(local_dir, 'sample.parquet')
-    if not os.path.exists(path):
-        print('Downloading sample.parquet', flush=True)
-        s3.download_file(bucket, 'processed/sample/sample.parquet', path)
-    return pd.read_parquet(path)
+    sample_dir = os.path.join(local_dir, 'sample')
+    if not os.path.exists(sample_dir):
+        os.makedirs(sample_dir, exist_ok=True)
+        print('Listing partition files', flush=True)
+        resp = s3.list_objects_v2(Bucket=bucket, Prefix='processed/sample/')
+        keys = [o['Key'] for o in resp.get('Contents', []) if o['Key'].endswith('.parquet')]
+        print(f'Downloading {len(keys)} partition files', flush=True)
+        for key in keys:
+            rel = key[len('processed/sample/'):]
+            local = os.path.join(sample_dir, rel)
+            os.makedirs(os.path.dirname(local), exist_ok=True)
+            print(f'  {key}', flush=True)
+            s3.download_file(bucket, key, local)
+    return pd.read_parquet(sample_dir)
 
 
 def stratified_sample(df, n_per_cat, seed):
@@ -66,7 +75,9 @@ if __name__ == '__main__':
     s3 = boto3.client('s3')
 
     df = load_sample(s3, args.bucket, args.local_dir)
-    print(f'Loaded sample.parquet: {len(df)} rows', flush=True)
+    print(f'Loaded sample: {len(df)} rows', flush=True)
+    print(f'Columns: {list(df.columns)}', flush=True)
+    print(df['category'].value_counts().to_string(), flush=True)
 
     sample = stratified_sample(df, args.n_per_cat, args.seed)
     print(f'Stratified sample: {len(sample)} rows', flush=True)
