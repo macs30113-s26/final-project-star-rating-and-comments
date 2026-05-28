@@ -1,0 +1,16 @@
+category,aspect,rad,n
+Beauty_and_Personal_Care,shipping,0.1596,50000
+Beauty_and_Personal_Care,quality,0.15256,50000
+Beauty_and_Personal_Care,durability,0.11874,50000
+Beauty_and_Personal_Care,usability,0.1026,50000
+Beauty_and_Personal_Care,value,-0.00076,50000
+Electronics,shipping,0.15204,50000
+Electronics,durability,0.13034,50000
+Electronics,usability,0.12554,50000
+Electronics,quality,0.1251,50000
+Electronics,value,-0.00216,50000
+Video_Games,shipping,0.14457,50000
+Video_Games,usability,0.14257,50000
+Video_Games,durability,0.13581,50000
+Video_Games,quality,0.12589,50000
+Video_Games,value,0.00503,50000

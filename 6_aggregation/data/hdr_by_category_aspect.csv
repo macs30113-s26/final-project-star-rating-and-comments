@@ -1,0 +1,16 @@
+category,aspect,n_high_rating,n_negative,hdr
+Beauty_and_Personal_Care,quality,20083,3284,0.16352138624707463
+Beauty_and_Personal_Care,shipping,20083,3110,0.1548573420305731
+Beauty_and_Personal_Care,durability,20083,2918,0.14529701737788178
+Beauty_and_Personal_Care,usability,20083,2746,0.13673255987651248
+Beauty_and_Personal_Care,value,20083,1983,0.09874022805357766
+Electronics,quality,19945,3206,0.16074204061168212
+Electronics,shipping,19945,3089,0.1548759087490599
+Electronics,durability,19945,3069,0.15387315116570568
+Electronics,usability,19945,3012,0.15101529205314615
+Electronics,value,19945,2089,0.10473802958134872
+Video_Games,quality,19991,3311,0.16562453103896754
+Video_Games,usability,19991,3245,0.1623230453704167
+Video_Games,durability,19991,3187,0.1594217397829023
+Video_Games,shipping,19991,3092,0.15466960132059426
+Video_Games,value,19991,2177,0.10889900455204843
