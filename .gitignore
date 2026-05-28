@@ -33,3 +33,6 @@ slurm-*.out
 .idea/
 .DS_Store
 Thumbs.db
+
+# Numpy arrays (embeddings.npy from Stage 3)
+*.npy
